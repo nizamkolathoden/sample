@@ -1,0 +1,24 @@
+db.weather.aggregate( [
+   {
+      $project: {
+         date: {
+            $dateToParts: { date: "$timestamp" }
+         },
+         temp: 1
+      }
+   },
+   {
+      $group: {
+         _id: {
+            date: {
+               year: "$date.year",
+               month: "$date.month",
+               day: "$date.day",
+               minute:"$date.minute",
+               sec:"$date.second"
+            }
+         },
+         avgTmp: { $avg: "$temp" }
+      }
+   }
+] )
